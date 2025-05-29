@@ -32,4 +32,4 @@ cp rsp.wasm dist/
 cp package.json dist/
 
 cd dist
-npm pack
+npm publish

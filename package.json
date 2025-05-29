@@ -2,13 +2,13 @@
   "name": "rsp-wasm",
   "version": "1.0.0",
   "description": "RSP Emulator (taken from Ares) in WASM",
-  "homepage": "https://github.com/HailToDodongo/rspjs#readme",
+  "homepage": "https://github.com/HailToDodongo/rsp-wasm#readme",
   "bugs": {
-    "url": "https://github.com/HailToDodongo/rspjs/issues"
+    "url": "https://github.com/HailToDodongo/rsp-wasm/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HailToDodongo/rspjs.git"
+    "url": "git+https://github.com/HailToDodongo/rsp-wasm.git"
   },
   "license": "ISC",
   "author": "HailToDodongo",
