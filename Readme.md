@@ -1,4 +1,4 @@
-# RSP-JS
+# RSP-WASM
 
 WASM port of the RSP code from ares.<br/>
 This project lets you emulate RSP code accurately via a WASM module,<br>
