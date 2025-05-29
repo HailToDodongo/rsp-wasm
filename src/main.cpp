@@ -1,14 +1,4 @@
 #include "main.h"
-
-void WASM_IMPORT(print_char)(u8 c);
-void WASM_IMPORT(print_u32)(u32 c);
-
-namespace {
-  void print(const char* str) {
-    for(;*str != 0; ++str)print_char(*str);
-  }
-}
-
 #include "rsp/rsp.cpp"
 
 void WASM_EXPORT(rsp_init)()
@@ -22,9 +12,11 @@ void WASM_EXPORT(rsp_set_halted)(u32 isHalted)
   ares::N64::rsp.status.halted = isHalted ? 1 : 0;
 }
 
-void WASM_EXPORT(rsp_step)()
+void WASM_EXPORT(rsp_step)(u32 steps)
 {
-  ares::N64::rsp.exec();
+  for(int i=0; i<steps; ++i) {
+    ares::N64::rsp.exec();
+  }
 }
 
 u32 WASM_EXPORT(rsp_ptr_dmem)()

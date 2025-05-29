@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 clang++ -nostdlib --target=wasm32 -std=c++20 \
@@ -23,4 +24,12 @@ clang++ -nostdlib --target=wasm32 -std=c++20 \
   -o rsp.wasm \
   src/main.cpp
 
-# mv code.wasm ../public
+rm -rf dist
+mkdir dist
+
+cp rspjs.js dist/index.js
+cp rsp.wasm dist/
+cp package.json dist/
+
+cd dist
+npm pack
