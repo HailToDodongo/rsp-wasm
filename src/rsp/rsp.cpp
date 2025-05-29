@@ -62,48 +62,21 @@ auto RSP::unload() -> void {
   imem.reset();
 }
 
-auto RSP::main() -> void {
-  while(Thread::clock < 0) {
-    auto clock = Thread::clock;
+auto RSP::exec() -> void {
+  auto clock = Thread::clock;
 
-    if(status.halted) {
-      step(128);
-    } else {
-      instruction();
-    }
-
-    dmaStep(Thread::clock - clock);
+  if(status.halted) {
+    step(1);
+  } else {
+    instruction();
   }
+
+  dmaStep(Thread::clock - clock);
 }
 
 auto RSP::instruction() -> void {
   {
     u32 instruction = imem.read<Word>(ipu.pc);
-
-    /*if(dmem.read<2>(addrTable) == 0) {
-        printf(" TABLE=0: pc:%08X\n", ipu.pc);
-    }
-
-    // Libdragon load command
-    if(ipu.pc == 0x44 && instruction == 0x24080800) {
-      uint32_t word = ipu.r[4].u32;
-      uint32_t ovl = (word >> 28) & 0xF;
-      uint32_t cmd = (word >> 24) & 0xF;
-      if(ovl == 0) {
-        printf("[LD-RSP] Fetch Command: %08X | RSPQ: %s\n", ipu.r[4], CMD_RSPQ[cmd]); // a0
-      } else if(ovl == 1) {
-        printf("[LD-RSP] Fetch Command: %08X | T3D: %s\n", ipu.r[4], CMD_T3D[cmd]); // a0
-      } else {
-        printf("[LD-RSP] Fetch Command: %08X | Ovl:%d Cmd:%d\n", ipu.r[4], ovl, cmd); // a0
-      }
-
-      printf("  Table: ");
-      for(int t=0; t<12; ++t) {
-        auto table = dmem.read<2>(addrTable + t*2);
-        printf("%04X ", (table << 2) & 0xFFF);
-      }
-      printf("\n");
-    }*/
 
     instructionPrologue(instruction);
     pipeline.begin();

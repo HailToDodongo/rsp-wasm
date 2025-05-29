@@ -46,7 +46,7 @@ struct RSP : Thread, Memory::RCP<RSP> {
   auto load() -> void;
   auto unload() -> void;
 
-  auto main() -> void;
+  auto exec() -> void;
 
   auto instruction() -> void;
   auto instructionPrologue(u32 instruction) -> void;
