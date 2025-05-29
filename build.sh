@@ -30,6 +30,7 @@ mkdir dist
 cp rspjs.js dist/index.js
 cp rsp.wasm dist/
 cp package.json dist/
+cp Readme.md dist/README.md
 
 cd dist
 npm publish

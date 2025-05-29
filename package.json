@@ -1,6 +1,6 @@
 {
   "name": "rsp-wasm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RSP Emulator (taken from Ares) in WASM",
   "homepage": "https://github.com/HailToDodongo/rsp-wasm#readme",
   "bugs": {
