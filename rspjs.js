@@ -41,6 +41,11 @@ class RSP {
     this.DMEM = new DataView(wasmMemBuff, this.fn.rsp_ptr_dmem());
   }
 
+  reset() {
+    this.fn.rsp_init();
+    this.fn.rsp_set_halted(0);
+  }
+
   step(count = 1) { 
     this.fn.rsp_step(count); 
   }
@@ -107,14 +112,24 @@ class RSP {
     return this.fn.rsp_get_cycles();
   }
 
-  readU8DMEM(addr) {
+  dmemReadU8(addr) {
     let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
     return this.DMEM.getUint8(addrLE);
   }
 
-  setU8DMEM(addr, value) {
+  dmemWriteU8(addr, value) {
     let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
     this.DMEM.setUint8(addrLE, value >>> 0);
+  }
+
+  imemReadU8(addr) {
+    let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
+    return this.IMEM.getUint8(addrLE);
+  }
+
+  imemWriteU8(addr, value) {
+    let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
+    this.IMEM.setUint8(addrLE, value >>> 0);
   }
 }
 
