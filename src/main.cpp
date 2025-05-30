@@ -38,3 +38,9 @@ u32 WASM_EXPORT(rsp_ptr_vpr)(u32 reg)
 {
   return (u32)ares::N64::rsp.vpu.r;
 }
+
+u32 WASM_EXPORT(rsp_get_cycles)()
+{
+  return ares::N64::rsp.clock;
+}
+

@@ -32,5 +32,3 @@ cp rsp.wasm dist/
 cp package.json dist/
 cp Readme.md dist/README.md
 
-cd dist
-npm publish

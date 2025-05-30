@@ -53,8 +53,10 @@ namespace {
 #include "serialization.cpp"
 
 auto RSP::load() -> void {
-  dmem.allocate(4 * 1024);
-  imem.allocate(4 * 1024);
+  dmem.allocate(4 * 1024, 0);
+  imem.allocate(4 * 1024, 0);
+  ipu = {};
+  vpu = {};
 }
 
 auto RSP::unload() -> void {
