@@ -19,7 +19,8 @@
     "rsp.wasm"
   ],
   "scripts": {
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "publish": "cd dist && npm publish"
   },
   "devDependencies": {
     "armips": "^1.0.0"
