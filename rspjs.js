@@ -32,6 +32,11 @@ class RSP {
     this.fn = wasmModule.instance.exports;
     const wasmMemBuff = wasmModule.instance.exports.memory.buffer;
 
+    // reactor model: run global constructors exactly once
+    if(this.fn._initialize && !wasmModule.__initialized) {
+      this.fn._initialize();
+      wasmModule.__initialized = true;
+    }
     this.fn.rsp_init();
     this.fn.rsp_set_halted(0);
 
@@ -39,11 +44,24 @@ class RSP {
     this.VPR = new DataView(wasmMemBuff, this.fn.rsp_ptr_vpr());
     this.IMEM = new DataView(wasmMemBuff, this.fn.rsp_ptr_imem());
     this.DMEM = new DataView(wasmMemBuff, this.fn.rsp_ptr_dmem());
+    this.RDRAM = new DataView(wasmMemBuff, this.fn.rsp_ptr_rdram(), this.fn.rsp_rdram_size());
   }
 
   reset() {
     this.fn.rsp_init();
     this.fn.rsp_set_halted(0);
+  }
+
+  /**
+   * Sets the PC (IMEM address, 0x1000 based or 0 based)
+   * @param {number} addr
+   */
+  setPC(addr) {
+    this.GPR.setUint32(32 * 4, addr & 0x1FFF, true);
+  }
+
+  isHalted() {
+    return this.fn.rsp_get_halted() !== 0;
   }
 
   step(count = 1) { 
@@ -130,6 +148,16 @@ class RSP {
   imemWriteU8(addr, value) {
     let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
     this.IMEM.setUint8(addrLE, value >>> 0);
+  }
+
+  rdramReadU8(addr) {
+    let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
+    return this.RDRAM.getUint8(addrLE);
+  }
+
+  rdramWriteU8(addr, value) {
+    let addrLE = (addr & ~0b11) | (3-(addr & 0b11));
+    this.RDRAM.setUint8(addrLE, value >>> 0);
   }
 }
 

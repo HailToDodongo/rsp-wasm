@@ -11,6 +11,30 @@
 #include "nall/types.hpp"
 #include "memory/memory.hpp"
 
+// RDRAM stand-in for DMA transfers (same byte-swapped layout as DMEM/IMEM)
+struct RDRAM {
+  static constexpr u32 size = 4 * 1024 * 1024;
+  static constexpr u32 mask = size - 1;
+  u8 data[size]{};
+
+  template<u32 Size>
+  auto read(u32 address) -> u64 {
+    if constexpr(Size == Byte) return *(u8* )&data[(address & mask & ~0) ^ 3];
+    if constexpr(Size == Half) return *(u16*)&data[(address & mask & ~1) ^ 2];
+    if constexpr(Size == Word) return *(u32*)&data[(address & mask & ~3) ^ 0];
+    if constexpr(Size == Dual) return read<Word>(address) << 32 | read<Word>(address + 4);
+  }
+
+  template<u32 Size>
+  auto write(u32 address, u64 value) -> void {
+    if constexpr(Size == Byte) *(u8* )&data[(address & mask & ~0) ^ 3] = value;
+    if constexpr(Size == Half) *(u16*)&data[(address & mask & ~1) ^ 2] = value;
+    if constexpr(Size == Word) *(u32*)&data[(address & mask & ~3) ^ 0] = value;
+    if constexpr(Size == Dual) { write<Word>(address, value >> 32); write<Word>(address + 4, value); }
+  }
+};
+extern RDRAM rdram;
+
 struct RSP : Thread, Memory::RCP<RSP> {
   
   struct Writable : public Memory::Writable {
@@ -40,6 +64,7 @@ struct RSP : Thread, Memory::RCP<RSP> {
 
   } dmem{*this};
   Memory::Writable imem;
+
 
 
   //rsp.cpp

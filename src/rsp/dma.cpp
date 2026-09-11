@@ -22,27 +22,22 @@ auto RSP::dmaTransferStart(Thread& thread) -> void {
 }
 
 auto RSP::dmaTransferStep() -> void {
-  // @TODO: DMA
-  /*
   auto& region = !dma.current.pbusRegion ? dmem : imem;
 
   if(dma.busy.read) {
     for(u32 i = 0; i <= dma.current.length; i += 8) {
-        u64 data = rdram.ram.read<Dual>(dma.current.dramAddress, nullptr);
-        region.write<Dual>(dma.current.pbusAddress, data);
-        if (system.homebrewMode) {
-          rsp.debugger.dmaReadWord(dma.current.dramAddress, dma.current.pbusRegion, dma.current.pbusAddress);
-        }
-        dma.current.dramAddress += 8;
-        dma.current.pbusAddress += 8;
+      u64 data = rdram.read<Dual>(dma.current.dramAddress);
+      region.write<Dual>(dma.current.pbusAddress, data);
+      dma.current.dramAddress += 8;
+      dma.current.pbusAddress += 8;
     }
   }
   if(dma.busy.write) {
     for(u32 i = 0; i <= dma.current.length; i += 8) {
-        u64 data = region.read<Dual>(dma.current.pbusAddress);
-        rdram.ram.write<Dual>(dma.current.dramAddress, data, "RSP DMA");
-        dma.current.dramAddress += 8;
-        dma.current.pbusAddress += 8;
+      u64 data = region.read<Dual>(dma.current.pbusAddress);
+      rdram.write<Dual>(dma.current.dramAddress, data);
+      dma.current.dramAddress += 8;
+      dma.current.pbusAddress += 8;
     }
   }
 
@@ -55,5 +50,4 @@ auto RSP::dmaTransferStep() -> void {
     dma.current.length = 0xFF8;
     dmaTransferStart(*this);
   }
-  */
 }

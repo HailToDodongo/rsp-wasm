@@ -1,6 +1,7 @@
 namespace ares::N64 {
 #include "rsp.hpp"
 RSP rsp;
+RDRAM rdram;
 
 namespace {
     const char* CMD_RSPQ[] = {

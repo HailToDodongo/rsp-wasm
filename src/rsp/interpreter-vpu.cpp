@@ -100,8 +100,8 @@ auto RSP::CTC2(cr32& rt, u8 rd) -> void {
   }
 
   for(u32 n : range(8)) {
-    *lo = r128{n, rt.u32 & 1 << 0 + n};
-    *hi = r128{n, rt.u32 & 1 << 8 + n};
+    lo->set(n, rt.u32 & 1 << 0 + n);
+    if(hi) hi->set(n, rt.u32 & 1 << 8 + n);
   }
 }
 

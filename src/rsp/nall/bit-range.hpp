@@ -7,6 +7,10 @@ namespace nall {
     struct conditional
     { typedef _Iftrue type; };
 
+  template<typename _Iftrue, typename _Iffalse>
+    struct conditional<false, _Iftrue, _Iffalse>
+    { typedef _Iffalse type; };
+
   template<bool _Cond, typename _Iftrue, typename _Iffalse>
     using conditional_t = typename conditional<_Cond, _Iftrue, _Iffalse>::type;
 

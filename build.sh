@@ -8,6 +8,7 @@ clang++ -nostdlib --target=wasm32 -std=c++20 \
   -mbulk-memory \
   -msimd128 \
   -mnontrapping-fptoint \
+  -mexec-model=reactor \
   -Wall \
   -flto -pedantic-errors -fno-exceptions -fno-rtti \
   -Wno-logical-op-parentheses \
@@ -15,7 +16,7 @@ clang++ -nostdlib --target=wasm32 -std=c++20 \
   -Wno-bitwise-op-parentheses \
   -Wno-gnu-anonymous-struct \
   \
-  -Wl,--no-entry \
+  -Wl,--entry=_initialize \
   -Wl,--export-dynamic \
   -Wl,--fatal-warnings \
   -Wl,--allow-undefined \
